@@ -10,6 +10,7 @@
 
     <properties>
         <spring.framework.version>4.2.6.RELEASE</spring.framework.version>
+
     </properties>
     <dependencies>
         <dependency>
@@ -23,7 +24,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
+            <version>1.7.20</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -36,6 +37,12 @@
             <artifactId>logback-classic</artifactId>
             <version>1.1.7</version>
         </dependency>
+        <!--与servlet容器交互，比如tomcat与jetty，提供一些http访问相关功能-->
+        <!--<dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+            <version>1.1.7</version>
+        </dependency>-->
 
         <!--数据库相关依赖-->
         <!--数据库驱动-->
@@ -47,9 +54,14 @@
         </dependency>
         <!--数据库连接池,优化数据库连接获得成本-->
         <dependency>
-            <groupId>c3p0</groupId>
+            <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
-            <version>0.9.1.2</version>
+            <version>0.9.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>mchange-commons-java</artifactId>
+            <version>0.2.12</version>
         </dependency>
 
         <!--DAO框架依赖-mybatis-->
@@ -145,5 +157,16 @@
     </dependencies>
     <build>
         <finalName>seckill</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

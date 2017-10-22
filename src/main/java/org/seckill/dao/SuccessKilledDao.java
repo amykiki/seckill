@@ -17,7 +17,7 @@ public interface SuccessKilledDao {
      * @param seckillId
      * @return
      */
-    SuccessKilled queryByIdWithSeckill(Long seckillId);
+    SuccessKilled queryByIdithSeckill(Long seckillId);
 
 
 }

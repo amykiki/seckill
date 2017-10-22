@@ -6,7 +6,7 @@ public class SuccessKilled {
     private Long seckillId;
     private Long userPhone;
     private short state;
-    private Date creatTime;
+    private Date createTime;
 
     //成功秒杀可以拿到seckill实体
     //多对一复合属性，一个seckill实体对应多个成功秒杀记录
@@ -18,7 +18,7 @@ public class SuccessKilled {
                 "seckillId=" + seckillId +
                 ", userPhone=" + userPhone +
                 ", state=" + state +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 '}';
     }
 
@@ -46,12 +46,12 @@ public class SuccessKilled {
         this.state = state;
     }
 
-    public Date getCreatTime() {
-        return creatTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Seckill getSeckill() {

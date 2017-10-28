@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd" >
+
+    <!--1. 开启SpringMvc注解模式-->
+    <!--简化配置
+        (1)自动注册DefaultAnnotationHandlerMapping，AnnotationMethodHandlerAdapter(映射url和方法)
+        (2)提供一系列：数据绑定，数字和日期的format @NumberFormat, @DateTimeFormat,
+            xml,json默认读写支持
+    -->
+    <mvc:annotation-driven/>
+
+    <!-- servlet-mapping 映射路径是:"/"-->
+    <!--2. 静态资源默认servlet配置
+        (1)加入对静态资源的处理，有些请求找不到handler:js,gif,png
+        (2)允许使用"/"做整体映射
+    -->
+    <mvc:default-servlet-handler/>
+
+    <!--3. 配置freemarker 显示viewResolver-->
+    <!--定义共享变量，我也不知道具体用途。。。-->
+    <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+        <!--共享变量-->
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="xml_escape" value-ref="fmXmlEscape"/>
+            </map>
+        </property>
+        <property name="freemarkerSettings">
+            <props>
+                <!--设置标签类型，两种[]和<>。[]标记解析要快些，常用是<>-->
+                <prop key="tag_syntax">auto_detect</prop>
+                <!--检查模板更新时间间隔，默认是5s-->
+                <prop key="template_update_delay">3</prop>
+                <prop key="defaultEncoding">UTF-8</prop>
+                <!--url编码utf-8-->
+                <prop key="url_escaping_charset">UTF-8</prop>
+                <prop key="locale">zh_CN</prop>
+                <prop key="boolean_format">true,false</prop>
+                <!--时间格式化-->
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="number_format">0.###</prop>
+                <!--去掉多余的空格-->
+                <prop key="whitespace_stripping">true</prop>
+                <!--引入的宏-->
+                <!--<prop key="auto_import"></prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="fmViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <!--ftl文件目录在freemarkerConfig中已经定义了，不能重复定义prefix-->
+        <!--<property name="prefix" value="/WEB-INF/ftl/"/>-->
+        <property name="suffix" value=".ftl"/>
+        <!--开启freemarker缓存-->
+        <property name="cache" value="true"/>
+        <!--view页面类型-->
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <!--是否通过spring宏库暴露以下几个属性供外部使用-->
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <!--把sping的RequestContext对象暴露为变量rc，在ftl文件中利用${rc.contextath}来读取应用程序的contextPath等-->
+        <property name="requestContextAttribute" value="rc"/>
+        <!--默认值为false，设置是否所有的request属性在与模板进行合并前添加到model中，可以理解为request范围内包含的所有对象，不是一个真正的request-->
+        <property name="exposeSessionAttributes" value="true"/>
+        <!--默认值为false，设置是否所有的session属性在与模板进行合并前添加到model中，理解同上-->
+        <property name="exposeRequestAttributes" value="true"/>
+    </bean>
+    <!--以下是jsp显示配置-->
+    <!--
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    -->
+
+    <!--4. 扫描web相关的bean-->
+    <context:component-scan base-package="org.seckill.web"/>
+</beans>

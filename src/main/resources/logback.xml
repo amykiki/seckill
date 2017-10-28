@@ -6,6 +6,8 @@
         </encoder>
     </appender>
     <logger name="org.seckill.dao" level="DEBUG"></logger>
+    <logger name="org.mybatis.spring.SqlSessionUtils" level="DEBUG"/>
+    <logger name="org.mybatis.spring.transaction" level="DEBUG"/>
     <logger name="dao" level="DEBUG"/>
     <root level="info">
         <appender-ref ref="STDOUT"/>

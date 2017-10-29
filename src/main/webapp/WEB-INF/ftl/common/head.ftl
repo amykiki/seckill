@@ -1,0 +1,4 @@
+<#import "mylib.ftl" as my>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="${my.cssRoot}/bootstrap.css">

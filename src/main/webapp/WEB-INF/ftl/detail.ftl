@@ -54,15 +54,16 @@
 <#--jquery cookie操作插件-->
 <script src="${my.jsLib}/jquery.cookie-1.4.js"></script>
 <#--jquery countDown倒计时插件-->
+<script src="${my.jsLib}/jquery.plugin.min.js"></script>
 <script src="${my.jsLib}/jquery.countdown-2.1.0.js"></script>
 <script src="${my.jsRoot}/seckill.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(function () {
+   $(function () {
         //传入参数
         seckill.detail.init({
             seckillId: ${seckill.seckillId},
-            startTime: ${seckill.startTime.time},
-            endTime: ${seckill.endTime.time}
+            startTime: ${seckill.startTime?long},
+            endTime: ${seckill.endTime?long}
         });
     });
 </script>

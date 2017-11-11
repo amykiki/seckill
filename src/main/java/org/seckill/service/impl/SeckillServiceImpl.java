@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -92,10 +91,8 @@ public class SeckillServiceImpl implements SeckillService {
             }
             SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
             return new SeckillExecution(seckillId, SeckillStatEnum.SUCESS, successKilled);
-        } catch (SeckillCloseException e1) {
+        } catch (SeckillCloseException | RepeatKillException e1) {
             throw e1;
-        } catch (RepeatKillException e2) {
-            throw e2;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             //所有编译期异常，转化为运行器异常，这样便于spring捕获，并回滚
@@ -105,7 +102,6 @@ public class SeckillServiceImpl implements SeckillService {
 
     private String getMD5(Long seckillId) {
         String base = seckillId + "/" + salt;
-        String md5 = DigestUtils.md5DigestAsHex(base.getBytes());
-        return md5;
+        return DigestUtils.md5DigestAsHex(base.getBytes());
     }
 }

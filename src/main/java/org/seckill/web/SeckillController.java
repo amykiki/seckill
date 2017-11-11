@@ -13,11 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 //模块 url:/模块/资源/{id}/细分
@@ -72,7 +75,7 @@ public class SeckillController {
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId,
                                                    @PathVariable("md5") String md5,
                                                    @CookieValue(value = "killPhone", required = false) Long phone) {
-        if (phone == null) {
+        if (!validatePhone(phone)) {
             return new SeckillResult<SeckillExecution>(false, "未登录");
         }
         SeckillResult<SeckillExecution> result;
@@ -82,14 +85,14 @@ public class SeckillController {
             result = new SeckillResult<SeckillExecution>(true, execution);
         } catch (RepeatKillException e) {
             execution = new SeckillExecution(seckillId, SeckillStatEnum.REPEAT_KILL);
-            result = new SeckillResult<SeckillExecution>(false, execution, SeckillStatEnum.REPEAT_KILL.getStateInfo());
+            result = new SeckillResult<SeckillExecution>(true, execution, SeckillStatEnum.REPEAT_KILL.getStateInfo());
         } catch (SeckillCloseException e) {
             execution = new SeckillExecution(seckillId, SeckillStatEnum.END);
-            result = new SeckillResult<SeckillExecution>(false, execution, SeckillStatEnum.END.getStateInfo());
+            result = new SeckillResult<SeckillExecution>(true, execution, SeckillStatEnum.END.getStateInfo());
         } catch (SeckillException e) {
             logger.error(e.getMessage(), e);
             execution = new SeckillExecution(seckillId, SeckillStatEnum.INNER_ERROR);
-            result = new SeckillResult<SeckillExecution>(false, execution, SeckillStatEnum.INNER_ERROR.getStateInfo());
+            result = new SeckillResult<SeckillExecution>(true, execution, SeckillStatEnum.INNER_ERROR.getStateInfo());
         }
         return result;
     }
@@ -109,4 +112,18 @@ public class SeckillController {
     private String forwardTo(String url) {
         return "forward:" + url;
     }
+
+    private boolean validatePhone(Long phone) {
+        if (StringUtils.isEmpty(phone)) {
+            return false;
+        }
+        String phoneStr = String.valueOf(phone);
+        Pattern pattern = Pattern.compile("^1\\d{10}$");
+        Matcher matcher = pattern.matcher(phoneStr);
+        if (matcher.find()) {
+            return true;
+        }
+        return false;
+    }
+
 }

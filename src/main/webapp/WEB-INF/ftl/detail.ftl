@@ -17,7 +17,6 @@
                 <#--展示倒计时-->
                 <span class="glyphicon" id="seckill-box"></span>
             </h2>
-        ${seckill.seckillId} -- ${seckill.name} -- ${seckill.startTime?datetime} -- ${seckill.endTime?datetime}
         </div>
     </div>
 </div>
@@ -55,7 +54,7 @@
 <script src="${my.jsLib}/jquery.cookie-1.4.js"></script>
 <#--jquery countDown倒计时插件-->
 <script src="${my.jsLib}/jquery.plugin.min.js"></script>
-<script src="${my.jsLib}/jquery.countdown-2.1.0.js"></script>
+<script src="${my.jsLib}/jquery.countdown.js"></script>
 <script src="${my.jsRoot}/seckill.js" type="text/javascript"></script>
 <script type="text/javascript">
    $(function () {
